@@ -1,16 +1,18 @@
-import React from 'react'
-import { Route,Routes } from 'react-router-dom'
-import Home from '../sections/Home'
+
+import { Route, Routes } from "react-router-dom";
+import Home from "../sections/Home";
+import Otp from "../sections/Otp";
 
 const RouterPage = () => {
   return (
     <div>
-
-    <Routes>
-        <Route path='/' element={<Home/>} />
-    </Routes>
+      <Routes>
+        <Route exact path="/" element={<Home />} />
+        <Route path="/otp" element={<Otp />} />
+      </Routes>
     </div>
-  )
-}
+  );
+};
 
-export default RouterPage
+export default RouterPage;
+       

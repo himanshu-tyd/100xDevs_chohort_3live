@@ -19,13 +19,13 @@ const Home = () => {
       </div>
       <div className="flex flex-col items-center jsutify-center">
         <input
-          className="w-[400px] h-[50px] rounded-[10px] mt-10 px-3 py-5 bg-[#19406A] text-white "
+          className="w-[400px] h-[50px] rounded-[10px] mt-10 px-3 py-5 bg-[#b2b5b8] text-white "
           type="data"
           onChange={handleChange}
-          placeholder='Your Birth Ye'
+          placeholder='Your Birth Year'
         />
 
-        <button className={`capitalize w-[400px] h-[45px] bg-[#7F95AC] text-white rounded-[10px] mt-10 ${data ? 'bg-[#3FDFD0]' : '' } ` }>confirm</button>
+        <button className={`capitalize w-[400px] h-[45px] text-white rounded-[10px] mt-10 ${data ? 'bg-[#3FDFD0]' : ' bg-[#7F95AC]' } ` }>confirm</button>
       </div>
     </div>
   );
