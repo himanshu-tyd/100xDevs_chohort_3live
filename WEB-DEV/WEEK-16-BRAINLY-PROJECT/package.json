@@ -1,0 +1,19 @@
+{
+  "name": "week-15-brainly-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/express": "^5.0.0",
+    "@types/mongoose": "^5.11.96",
+    "express": "^4.21.1",
+    "mongoose": "^8.8.1",
+    "typescript": "^5.6.3"
+  }
+}
