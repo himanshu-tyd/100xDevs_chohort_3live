@@ -1,0 +1,1 @@
+{"root":["./frontend/vite.config.ts","./frontend/src/app.tsx","./frontend/src/main.tsx","./frontend/src/vite-env.d.ts","./src/index.ts"],"errors":true,"version":"5.6.2"}
