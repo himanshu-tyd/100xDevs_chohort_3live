@@ -1,33 +1,31 @@
 import { useEffect, useState } from "react";
+import { useSocket } from "./hooks/useSocket";
 
 const App = () => {
   const [message, setMessage] = useState(["hi there", "nice there"]);
+  const [ws, setWs] = useState<WebSocket | null>(null);
   const [data, setData]=useState<{message:string}>({
     message:'' 
   })
 
+  const {message: msg,socketFun}=useSocket()
+
+
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000");
-
-    ws.onmessage = (event) => {
-      console.log(event);
-    };
-
-    ws.onopen = () => {
-      ws.send(
-        JSON.stringify({
-          type: "join",
-          payload: {
-            roomId: "red",
-          },
-        })
-      );
-    };
+    const ws=socketFun()
+    setWs(ws)
 
     return () => ws.close();
   }, []);
 
-  const handleSend = () => {};
+  const handleSend = () => {
+    ws?.send(JSON.stringify({
+      type:"chat",
+      payload:{
+        message: data
+      }
+    }))
+  };
 
   return (
     <section className="bg-[#121212] w-full h-dvh flex flex-col">
