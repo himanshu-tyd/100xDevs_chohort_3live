@@ -94,7 +94,7 @@ export default function Home() {
             width={16}
             height={16}
           />
-          Go to turbo.build →
+          Go to turbo.build changese here made
         </a>
       </footer>
     </div>
