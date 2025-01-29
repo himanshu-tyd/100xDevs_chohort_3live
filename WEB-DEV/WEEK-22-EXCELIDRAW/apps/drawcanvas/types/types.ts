@@ -1,3 +1,5 @@
+import { shapes } from "@/constans";
+
 export type SingUpType = {
   username: string;
   password: string;
@@ -17,7 +19,13 @@ export type userDataType = {
   photo?: string | null;
 };
 
+export type roomType = {
+  name: string;
+};
 
-export type roomType={
-  name:string
-}
+export type canvasType = {
+  w: number;
+  h: number;
+};
+
+export type shapesType = (typeof shapes)[number]["name"] | null;

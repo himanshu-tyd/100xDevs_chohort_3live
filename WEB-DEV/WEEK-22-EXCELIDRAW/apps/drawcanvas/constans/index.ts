@@ -3,11 +3,11 @@ import {createElement} from 'react'
 
 
 export const shapes=[
-    {name: "Hand", icon: createElement(Hand)},
-    {name: "Pointer", icon: createElement(MousePointer2)},
-    {name: "Square", icon: createElement(Square)},
-    {name: "Eclipse", icon: createElement(Circle)},
-    {name: "Triangle", icon: createElement(Triangle)},
-    {name: "Diamond", icon: createElement(Diamond)},
-    {name: "Arrow", icon: createElement(MoveRight)},
+    {name: "hand", icon: createElement(Hand)},
+    {name: "pointer", icon: createElement(MousePointer2)},
+    {name: "square", icon: createElement(Square)},
+    {name: "eclipse", icon: createElement(Circle)},
+    {name: "triangle", icon: createElement(Triangle)},
+    {name: "diamond", icon: createElement(Diamond)},
+    {name: "arrow", icon: createElement(MoveRight)},
 ] as const
