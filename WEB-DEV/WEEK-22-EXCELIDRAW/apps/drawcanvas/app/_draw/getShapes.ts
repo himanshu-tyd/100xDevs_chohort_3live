@@ -12,23 +12,17 @@ const getShapes = async (roomId: string) => {
       return {};
     }
 
-    console.log(context)
-    
-    
-    const shapes=context.data
+    const shapes = context.data;
 
-    if(!shapes) return
-    
-    const dataShape=shapes?.map((x)=>{
-        const messageData=JSON.parse(x.message)
-        
-        return messageData
-    })
-    
-    toast.success(context.message);
+    if (!shapes) return;
 
-    return dataShape
+    const dataShape = shapes?.map((x) => {
+      const messageData = JSON.parse(x.message);
 
+      return messageData.shape;
+    });
+
+    return dataShape;
   } catch (e) {
     if (e instanceof Error) toast.error(e.message);
     console.log(e);

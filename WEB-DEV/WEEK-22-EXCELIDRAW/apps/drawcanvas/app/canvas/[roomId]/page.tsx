@@ -1,4 +1,5 @@
 import Canvas from "@/app/_componets/Canvas";
+import RoomCanvas from "@/app/_componets/RoomCanvas";
 
 interface canvasprops {
   params: {
@@ -13,7 +14,7 @@ const CanvasPage = async({ params }: canvasprops) => {
 
 console.log(roomId)
 
-  return <Canvas roomId={roomId} />;
+  return <RoomCanvas roomId={roomId}  />
 };
 
 export default CanvasPage;

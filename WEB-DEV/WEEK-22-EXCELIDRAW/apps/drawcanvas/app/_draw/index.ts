@@ -20,13 +20,15 @@ export const initDraw = async (
       clearCanvas(ctx, canvas, existingShapes);
     }
   };
-  
+
   let startX: number = 0;
   let startY: number = 0;
   let clickMouse: boolean = false;
 
   const existingShapes: shapes[] = await getShapes(roomId);
+  clearCanvas(ctx, canvas, existingShapes);
 
+  console.log(await getShapes(roomId));
 
   const getMouseProp = (e: MouseEvent) => {
     const rect = canvas.getBoundingClientRect();
