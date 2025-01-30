@@ -1,4 +1,4 @@
-import { Caveat } from "next/font/google";
+
 import { shapes } from "./shapes";
 import getShapes from "./getShapes";
 import { shapesType } from "@/types/types";
@@ -12,7 +12,7 @@ export class DrawGame {
   socket: WebSocket;
   private startX: number;
   private startY: number;
-  private seletedTool:shapesType =null
+  private seletedTool: shapesType = null;
 
   constructor(canvas: HTMLCanvasElement, roomId: string, socket: WebSocket) {
     this.canvas = canvas;
@@ -35,7 +35,7 @@ export class DrawGame {
   //geting existing shapes from backend
   async inittDraw() {
     this.existingShapes = await getShapes(this.roomId);
-    this.clearCanvas()
+    this.clearCanvas();
   }
 
   //init socket handler
@@ -60,8 +60,6 @@ export class DrawGame {
   };
 
   initMouseHandler() {
-
-
     this.canvas.addEventListener("mousedown", (e) => {
       this.clickMouse = true;
 
@@ -87,13 +85,39 @@ export class DrawGame {
           }
           break;
 
-        case "eclipse":
+        case "eclipse": {
+          const radius = Math.max(w, h) / 2;
+          const centerX = this.startX + radius;
+          const centerY = this.startY + radius;
+          this.ctx.beginPath();
+          this.ctx.arc(centerX, centerY, Math.abs(radius), 0, Math.PI * 2);
+          this.ctx.stroke();
+        }
+        break;
+
+        case "triangle":
           {
-            const radius = Math.max(w, h) / 2;
-            const centerX = this.startX + radius;
-            const centerY = this.startY + radius;
             this.ctx.beginPath();
-            this.ctx.arc(centerX, centerY, Math.abs(radius), 0, Math.PI * 2);
+            this.ctx.moveTo(this.startX, this.startY);
+            this.ctx.lineTo(this.startX - w / 2, this.startY + h);
+            this.ctx.lineTo(this.startX + w / 2, this.startY + h);
+            this.ctx.closePath();
+            this.ctx.strokeStyle = "black";
+            this.ctx.lineWidth = 1;
+            this.ctx.stroke();
+          }
+          break;
+
+          case "diamond":
+          {
+            this.ctx.beginPath();
+            this.ctx.moveTo(this.startX, this.startY);
+            this.ctx.lineTo(this.startX - w / 2, this.startY + h);
+            this.ctx.lineTo(this.startX + w / 2, this.startY - h);
+            // this.ctx.lineTo(this.startX + w / 2, this.startY + h);
+            this.ctx.closePath();
+            this.ctx.strokeStyle = "black";
+            this.ctx.lineWidth = 1;
             this.ctx.stroke();
           }
           break;
@@ -112,7 +136,6 @@ export class DrawGame {
 
       let shape: shapes | null = null;
 
-
       switch (this.seletedTool) {
         case "square":
           {
@@ -126,18 +149,31 @@ export class DrawGame {
           }
           break;
 
-        case "eclipse":
-          {
-          
-            const radius = Math.max(w, h) / 2;
-            const centerX = this.startX + radius;
-            const centerY = this.startY + radius;
+        case "eclipse": {
+          const radius = Math.max(w, h) / 2;
+          const centerX = this.startX + radius;
+          const centerY = this.startY + radius;
 
+          shape = {
+            type: "eclipse",
+            centerX: centerX,
+            centerY: centerY,
+            radius: Math.abs(radius),
+          };
+
+          break;
+        }
+
+        case "triangle":
+          {
             shape = {
-              type: "eclipse",
-              centerX: centerX,
-              centerY: centerY,
-              radius: Math.abs(radius),
+              type: "triangle",
+              moveX: this.startX,
+              moveY: this.startY,
+              lineToLeftX: this.startX - w / 2,
+              lineToLeftY: this.startY + h,
+              lineToRightX: this.startX + w / 2,
+              lineToRightY: this.startY + h,
             };
           }
           break;
@@ -158,13 +194,12 @@ export class DrawGame {
         })
       );
     });
-
-    
   }
 
   //re-rendering logic
   clearCanvas() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
     this.existingShapes.map((shape) => {
       switch (shape.type) {
         case "square":
@@ -180,8 +215,20 @@ export class DrawGame {
             0,
             Math.PI * 2
           );
-          this.ctx.stroke();
           this.ctx.closePath();
+          this.ctx.stroke();
+          break;
+
+        case "triangle":
+          {
+            this.ctx.beginPath();
+            this.ctx.moveTo(shape.moveX, shape.moveY);
+            this.ctx.lineTo(shape.lineToLeftX, shape.lineToLeftY);
+            this.ctx.lineTo(shape.lineToRightX, shape.lineToRightY);
+            this.ctx.closePath();
+            this.ctx.lineWidth = 1;
+            this.ctx.stroke();
+          }
           break;
       }
     });

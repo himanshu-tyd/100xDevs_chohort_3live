@@ -42,11 +42,7 @@ const Canvas = ({ roomId, socket }: canvasprops) => {
       const draw = new DrawGame(canvas, roomId, socket);
       setDrawGame(draw);
 
-      return () => {
-        canvas.removeEventListener("mousedown", () => {});
-        canvas.removeEventListener("mouseup", () => {});
-        canvas.removeEventListener("mousemove", () => {});
-      };
+      return () => {};
     }
   }, [canvasRef]);
 
