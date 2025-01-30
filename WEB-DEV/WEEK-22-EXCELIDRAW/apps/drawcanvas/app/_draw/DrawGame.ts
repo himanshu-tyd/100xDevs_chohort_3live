@@ -1,4 +1,3 @@
-
 import { shapes } from "./shapes";
 import getShapes from "./getShapes";
 import { shapesType } from "@/types/types";
@@ -60,15 +59,16 @@ export class DrawGame {
   };
 
   initMouseHandler() {
+    //mousedown handler
     this.canvas.addEventListener("mousedown", (e) => {
       this.clickMouse = true;
 
       const position = this.getMouseProp(e);
-
       this.startX = position.x;
       this.startY = position.y;
     });
 
+    //mouse move handler
     this.canvas.addEventListener("mousemove", (e) => {
       if (!this.clickMouse) return;
 
@@ -80,46 +80,89 @@ export class DrawGame {
 
       switch (this.seletedTool) {
         case "square":
-          {
-            this.ctx.strokeRect(this.startX, this.startY, w, h);
-          }
+          this.ctx.strokeRect(this.startX, this.startY, w, h);
+
           break;
 
-        case "eclipse": {
+        case "eclipse":
           const radius = Math.max(w, h) / 2;
           const centerX = this.startX + radius;
           const centerY = this.startY + radius;
           this.ctx.beginPath();
           this.ctx.arc(centerX, centerY, Math.abs(radius), 0, Math.PI * 2);
           this.ctx.stroke();
-        }
-        break;
 
-        case "triangle":
-          {
-            this.ctx.beginPath();
-            this.ctx.moveTo(this.startX, this.startY);
-            this.ctx.lineTo(this.startX - w / 2, this.startY + h);
-            this.ctx.lineTo(this.startX + w / 2, this.startY + h);
-            this.ctx.closePath();
-            this.ctx.strokeStyle = "black";
-            this.ctx.lineWidth = 1;
-            this.ctx.stroke();
-          }
           break;
 
-          case "diamond":
-          {
-            this.ctx.beginPath();
-            this.ctx.moveTo(this.startX, this.startY);
-            this.ctx.lineTo(this.startX - w / 2, this.startY + h);
-            this.ctx.lineTo(this.startX + w / 2, this.startY - h);
-            // this.ctx.lineTo(this.startX + w / 2, this.startY + h);
-            this.ctx.closePath();
-            this.ctx.strokeStyle = "black";
-            this.ctx.lineWidth = 1;
-            this.ctx.stroke();
-          }
+        case "triangle":
+          this.ctx.beginPath();
+          this.ctx.moveTo(this.startX, this.startY);
+
+          this.ctx.lineTo(this.startX - w / 2, this.startY + h);
+          this.ctx.lineTo(this.startX + w / 2, this.startY + h);
+          this.ctx.closePath();
+          this.ctx.lineWidth = 1;
+          this.ctx.stroke();
+
+          break;
+
+        case "diamond":
+          this.ctx.beginPath();
+          this.ctx.moveTo(this.startX, this.startY);
+          this.ctx.lineTo(this.startX - w / 2, this.startY + h / 2);
+          this.ctx.lineTo(this.startX, this.startY + h);
+          this.ctx.lineTo(this.startX + w / 2, this.startY + h / 2);
+          this.ctx.closePath();
+          this.ctx.lineWidth = 1;
+          this.ctx.stroke();
+
+          break;
+        case "line":
+          this.ctx.beginPath();
+          this.ctx.moveTo(this.startX, this.startY);
+          this.ctx.lineTo(position.x, position.y);
+          this.ctx.closePath();
+          this.ctx.lineWidth = 1;
+          this.ctx.stroke();
+          break;
+
+        case "arrow":
+          const arrowSize = 15;
+          const endX = position.x;
+          const endY = position.y;
+          console.log(endX, endY);
+
+          //this will give us angel of end line
+          const arrowAngle = Math.atan2(h, w);
+
+          //first line
+          const line1X = endX - arrowSize * Math.cos(arrowAngle - Math.PI / 6);
+          const line1Y = endY - arrowSize * Math.sin(arrowAngle - Math.PI / 6);
+
+          //second line
+
+          const line2X = endX - arrowSize * Math.cos(arrowAngle + Math.PI / 6);
+          const line2Y = endY - arrowSize * Math.sin(arrowAngle + Math.PI / 6);
+
+          //main line
+          this.ctx.beginPath();
+          this.ctx.moveTo(this.startX, this.startY);
+          this.ctx.lineTo(endX, endY);
+          this.ctx.stroke();
+
+          // fist line draw
+          this.ctx.beginPath();
+          this.ctx.moveTo(endX, endY);
+          this.ctx.lineTo(line1X, line1Y);
+          this.ctx.stroke();
+
+          console.log(endX, endY);
+          //second line draw
+          this.ctx.beginPath();
+          this.ctx.moveTo(endX, endY);
+          this.ctx.lineTo(line2X, line2Y);
+          this.ctx.stroke();
+
           break;
 
         default:
@@ -127,6 +170,7 @@ export class DrawGame {
       }
     });
 
+    //Mouse Up handler
     this.canvas.addEventListener("mouseup", (e) => {
       this.clickMouse = false;
 
@@ -149,20 +193,21 @@ export class DrawGame {
           }
           break;
 
-        case "eclipse": {
-          const radius = Math.max(w, h) / 2;
-          const centerX = this.startX + radius;
-          const centerY = this.startY + radius;
+        case "eclipse":
+          {
+            const radius = Math.max(w, h) / 2;
+            const centerX = this.startX + radius;
+            const centerY = this.startY + radius;
 
-          shape = {
-            type: "eclipse",
-            centerX: centerX,
-            centerY: centerY,
-            radius: Math.abs(radius),
-          };
+            shape = {
+              type: "eclipse",
+              centerX: centerX,
+              centerY: centerY,
+              radius: Math.abs(radius),
+            };
+          }
 
           break;
-        }
 
         case "triangle":
           {
@@ -171,20 +216,84 @@ export class DrawGame {
               moveX: this.startX,
               moveY: this.startY,
               lineToLeftX: this.startX - w / 2,
-              lineToLeftY: this.startY + h,
+              lineToLeftY: this.startY + h / 2,
               lineToRightX: this.startX + w / 2,
-              lineToRightY: this.startY + h,
+              lineToRightY: this.startY + h / 2,
             };
           }
+          break;
+
+        case "diamond":
+          {
+            shape = {
+              type: "diamond",
+              moveX: this.startX,
+              moveY: this.startY,
+              topLeftX: this.startX - w / 2,
+              topLeftY: this.startY + h / 2,
+              buttonLeftX: this.startX,
+              buttonLeftY: this.startY + h,
+              topRightX: this.startX + w / 2,
+              topRightY: this.startY + h / 2,
+            };
+          }
+          break;
+        case "line":
+          {
+            shape = {
+              type: "line",
+              moveX: this.startX,
+              moveY: this.startY,
+              lineToX: position.x,
+              lineToY: position.y,
+            };
+          }
+          break;
+
+        case "arrow":
+          const arrowSize = 15;
+          const endX = position.x;
+          const endY = position.y;
+
+          //this will give us angel of end line
+          const arrowAngle = Math.atan2(h, w);
+
+          //first line
+          const line1X = endX - arrowSize * Math.cos(arrowAngle - Math.PI / 6);
+          const line1Y = endY - arrowSize * Math.sin(arrowAngle - Math.PI / 6);
+
+          //second line
+
+          const line2X = endX - arrowSize * Math.cos(arrowAngle + Math.PI / 6);
+          const line2Y = endY - arrowSize * Math.sin(arrowAngle + Math.PI / 6);
+
+          shape = {
+            type: "arrow",
+            moveToX: this.startX,
+            moveToY: this.startY,
+            mainLineX: endX,
+            mainLineY: endY,
+            line1MoveToX: endX,
+            line1MoveToY: endY,
+            line2MoveToX: endX,
+            line2MoveToY: endY,
+            line1X: line1X,
+            line1Y: line1Y,
+            line2X: line2X,
+            line2Y: line2Y,
+          };
+
           break;
 
         default:
           break;
       }
 
+      console.log(shape);
+
       if (!shape) return;
 
-      this.existingShapes.push(shape);
+      this.existingShapes?.push(shape);
 
       this.socket.send(
         JSON.stringify({
@@ -200,7 +309,9 @@ export class DrawGame {
   clearCanvas() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.existingShapes.map((shape) => {
+    this.ctx.lineWidth = 1;
+
+    this.existingShapes?.map((shape) => {
       switch (shape.type) {
         case "square":
           this.ctx.strokeRect(shape.x, shape.y, shape.width, shape.height);
@@ -215,20 +326,61 @@ export class DrawGame {
             0,
             Math.PI * 2
           );
+          this.ctx.stroke();
+          this.ctx.closePath();
+          break;
+
+        case "triangle":
+          this.ctx.beginPath();
+          this.ctx.moveTo(shape.moveX, shape.moveY);
+          this.ctx.lineTo(shape.lineToLeftX, shape.lineToLeftY);
+          this.ctx.lineTo(shape.lineToRightX, shape.lineToRightY);
+          this.ctx.closePath();
+          this.ctx.stroke();
+
+          break;
+
+        case "diamond":
+          this.ctx.beginPath();
+          this.ctx.moveTo(shape.moveX, shape.moveY);
+          this.ctx.lineTo(shape.topLeftX, shape.topLeftY);
+          this.ctx.lineTo(shape.buttonLeftX, shape.buttonLeftY);
+          this.ctx.lineTo(shape.topRightX, shape.topRightY);
+          this.ctx.closePath();
+          this.ctx.stroke();
+
+          break;
+
+        case "line":
+          this.ctx.beginPath();
+          this.ctx.moveTo(shape.moveX, shape.moveY);
+          this.ctx.lineTo(shape.lineToX, shape.lineToY);
           this.ctx.closePath();
           this.ctx.stroke();
           break;
 
-        case "triangle":
-          {
-            this.ctx.beginPath();
-            this.ctx.moveTo(shape.moveX, shape.moveY);
-            this.ctx.lineTo(shape.lineToLeftX, shape.lineToLeftY);
-            this.ctx.lineTo(shape.lineToRightX, shape.lineToRightY);
-            this.ctx.closePath();
-            this.ctx.lineWidth = 1;
-            this.ctx.stroke();
-          }
+        case "arrow":
+          //main line
+          this.ctx.beginPath();
+          this.ctx.moveTo(shape.moveToX, shape.moveToY);
+          this.ctx.lineTo(shape.mainLineX, shape.mainLineY);
+          this.ctx.stroke();
+
+          // fist line draw
+          this.ctx.beginPath();
+          this.ctx.moveTo(shape.line1MoveToX, shape.line1MoveToY);
+          this.ctx.lineTo(shape.line1X, shape.line1Y);
+          this.ctx.stroke();
+
+          //second line draw
+          this.ctx.beginPath();
+          this.ctx.moveTo(shape.line2MoveToX, shape.line2MoveToY);
+          this.ctx.lineTo(shape.line2X, shape.line2Y);
+          this.ctx.stroke();
+
+          break;
+
+        default:
           break;
       }
     });
