@@ -5,12 +5,18 @@ export type shapes =
       y: number;
       width: number;
       height: number;
+      isFill: boolean;
+      fillColor: string;
+      strokeColor: string;
     }
   | {
       type: "eclipse";
       centerX: number;
       centerY: number;
       radius: number;
+      isFill:boolean;
+      fillColor:string,
+      strokeColor:string
     }
   | {
       type: "triangle";
@@ -20,6 +26,9 @@ export type shapes =
       lineToLeftY: number;
       lineToRightX: number;
       lineToRightY: number;
+      isFill:boolean;
+      fillColor:string;
+      strokeColor:string;
     }
   | {
       type: "diamond";
@@ -31,6 +40,9 @@ export type shapes =
       buttonLeftY: number;
       topRightX: number;
       topRightY: number;
+      isFill:boolean;
+      fillColor:string;
+      strokeColor:string;
     }
   | {
       type: "line";
@@ -53,4 +65,10 @@ export type shapes =
       line1Y: number;
       line2X: number;
       line2Y: number;
+    }
+
+  | {
+      type: "pencil";
+      points: { x: number; y: number; strokeColor: string }[][];
+      strokeColor: string;
     };
