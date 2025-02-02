@@ -1,215 +1,158 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import {
-  Shapes,
-  Copy,
-  Users,
-  Settings,
-  Lock,
-  Globe,
-  ArrowRight,
-} from "lucide-react";
+import { Paintbrush, ArrowRight, Grid, Plus, User } from "lucide-react";
 import { useCreatRoom } from "@/hooks/useCreateRom";
 import ButtonLoader from "@/components/ButtonLoader";
 
+interface Room {
+  id: string;
+  name: string;
+  createdAt: string;
+  participants?: number;
+  lastActive?: string;
+}
+
 function CreateRoom() {
   const [roomName, setRoomName] = useState("");
-  const [isPrivate, setIsPrivate] = useState(false);
-  const [showInviteLink, setShowInviteLink] = useState(false);
-  const [inviteLink, setInviteLink] = useState("");
-
+  const [rooms, setRooms] = useState<Room[]>([]);
   const { loading, createRoom } = useCreatRoom();
+  const username = "John Doe"; // Replace with actual user data
+
+  useEffect(() => {
+    const mockRooms = [
+      { 
+        id: "room1", 
+        name: "Design Workshop", 
+        createdAt: "2024-03-20",
+        participants: 5,
+        lastActive: "2 hours ago"
+      },
+      { 
+        id: "room2", 
+        name: "Brainstorming Session", 
+        createdAt: "2024-03-19",
+        participants: 3,
+        lastActive: "1 day ago"
+      },
+      { 
+        id: "room3", 
+        name: "Project Wireframes", 
+        createdAt: "2024-03-18",
+        participants: 2,
+        lastActive: "3 days ago"
+      },
+    ];
+    setRooms(mockRooms);
+  }, []);
 
   const handleCreateRoom = async (e: React.FormEvent) => {
     e.preventDefault();
-
     createRoom({ name: roomName });
-    
-    const demoLink = `test link here`;
-    setInviteLink(demoLink);
-    // setShowInviteLink(true);
-  };
-
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(inviteLink);
+    setRoomName("");
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-2">
-              <Shapes className="w-8 h-8 text-indigo-600" />
-              <span className="text-xl font-bold text-gray-900">
-                DrawCanvas
-              </span>
-            </Link>
-            <nav className="flex items-center space-x-4">
-              <Link href="/rooms" className="text-gray-500 hover:text-gray-900">
-                My Rooms
-              </Link>
-              <Link
-                href="/settings"
-                className="text-gray-500 hover:text-gray-900"
-              >
-                <Settings className="w-5 h-5" />
-              </Link>
-            </nav>
+    <div className="min-h-screen flex flex-col bg-gradient-to-[138deg] from-[#AEEAEC] via-[#FFC9D0] to-[#56C5FF]">
+      {/* Main Header */}
+      <header className="w-full px-4 lg:px-6 h-16 flex items-center backdrop-blur-md bg-white/20 border-b border-white/20">
+        <div className="container mx-auto flex items-center justify-between">
+          <Link href="/" className="flex items-center justify-center">
+            <Paintbrush className="w-6 h-6 mr-2 text-slate-800" />
+            <span className="font-bold text-xl text-slate-800">100x Canvas</span>
+          </Link>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/30 backdrop-blur-sm">
+              <User className="w-4 h-4 text-slate-700" />
+              <span className="text-sm font-medium text-slate-700">{username}</span>
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-white rounded-lg shadow-sm border p-8">
-          {!showInviteLink ? (
-            <>
-              <div className="text-center mb-8">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                  Create a New Room
-                </h1>
-                <p className="text-gray-600">
-                  Set up your collaborative drawing space
-                </p>
-              </div>
+      <main className="flex-1 container mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto space-y-8">
+          {/* Page Header */}
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-slate-800">Your Canvas Rooms</h1>
+              <p className="text-slate-600 mt-1">Create or join existing rooms to start collaborating</p>
+            </div>
+            <button
+              onClick={() => document.getElementById('createRoomInput')?.focus()}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/95 text-blue-600 font-semibold hover:bg-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl backdrop-blur-sm"
+            >
+              <Plus className="w-5 h-5" />
+              New Room
+            </button>
+          </div>
 
-              <form onSubmit={handleCreateRoom} className="space-y-6">
-                <div>
-                  <label
-                    htmlFor="roomName"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Room Name
-                  </label>
-                  <input
-                    type="text"
-                    id="roomName"
-                    value={roomName}
-                    onChange={(e) => setRoomName(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    placeholder="My Drawing Room"
-                    required
-                  />
-                </div>
+          {/* Create Room Section */}
+          <div className="backdrop-blur-md bg-white/20 rounded-xl p-6 shadow-lg border border-white/20">
+            <form onSubmit={handleCreateRoom} className="flex gap-4">
+              <input
+                id="createRoomInput"
+                type="text"
+                value={roomName}
+                onChange={(e) => setRoomName(e.target.value)}
+                className="flex-1 px-4 py-3 rounded-lg bg-white/50 backdrop-blur-sm border border-white/30 focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-slate-500 text-slate-800"
+                placeholder="Enter room name..."
+                required
+              />
+              <button
+                type="submit"
+                className="px-6 py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl backdrop-blur-sm flex items-center gap-2"
+              >
+                {loading ? (
+                  <ButtonLoader />
+                ) : (
+                  <>
+                    Create Room
+                    <ArrowRight className="w-5 h-5" />
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">
-                    Privacy Settings
-                  </label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <button
-                      type="button"
-                      onClick={() => setIsPrivate(false)}
-                      className={`p-4 border rounded-lg text-left ${
-                        !isPrivate
-                          ? "border-indigo-500 bg-indigo-50 ring-2 ring-indigo-500"
-                          : "border-gray-200 hover:border-gray-300"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <Globe className="w-5 h-5 text-gray-700" />
-                        <div
-                          className={`h-4 w-4 rounded-full ${!isPrivate ? "bg-indigo-500" : "border border-gray-300"}`}
-                        />
-                      </div>
-                      <h3 className="font-medium text-gray-900">Public Room</h3>
-                      <p className="text-sm text-gray-500 mt-1">
-                        Anyone with the link can join
-                      </p>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setIsPrivate(true)}
-                      className={`p-4 border rounded-lg text-left ${
-                        isPrivate
-                          ? "border-indigo-500 bg-indigo-50 ring-2 ring-indigo-500"
-                          : "border-gray-200 hover:border-gray-300"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <Lock className="w-5 h-5 text-gray-700" />
-                        <div
-                          className={`h-4 w-4 rounded-full ${isPrivate ? "bg-indigo-500" : "border border-gray-300"}`}
-                        />
-                      </div>
-                      <h3 className="font-medium text-gray-900">
-                        Private Room
-                      </h3>
-                      <p className="text-sm text-gray-500 mt-1">
-                        Only invited people can join
-                      </p>
-                    </button>
+          {/* Rooms Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {rooms.map((room) => (
+              <Link
+                key={room.id}
+                href={`/canvas/${room.id}`}
+                className="group block rounded-xl bg-white/30 hover:bg-white/40 transition-all duration-300 transform hover:scale-102 backdrop-blur-sm border border-white/20 overflow-hidden shadow-lg hover:shadow-xl"
+              >
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">
+                      {room.name}
+                    </h3>
+                    <div className="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center">
+                      <Grid className="w-4 h-4 text-slate-600" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-sm text-slate-600">
+                      <User className="w-4 h-4" />
+                      <span>{room.participants} participants</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-slate-500">Created {new Date(room.createdAt).toLocaleDateString()}</span>
+                      <span className="text-blue-600">Active {room.lastActive}</span>
+                    </div>
                   </div>
                 </div>
-
-                <div className="pt-4">
-                  <button
-                    type="submit"
-                    className="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    {loading ? (
-                      <ButtonLoader />
-                    ) : (
-                      <span className="flex items-center">
-                        Create Room <ArrowRight className="ml-2 w-5 h-5" />
-                      </span>
-                    )}
-                  </button>
-                </div>
-              </form>
-            </>
-          ) : (
-            <div className="text-center">
-              <div className="mb-8">
-                <div className="mx-auto w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
-                  <Users className="w-8 h-8 text-indigo-600" />
-                </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                  Room Created!
-                </h2>
-                <p className="text-gray-600">
-                  Share this link with others to invite them to your room
-                </p>
+                <div className="h-1 w-full bg-gradient-to-r from-blue-500 to-purple-500" />
+              </Link>
+            ))}
+            {rooms.length === 0 && (
+              <div className="col-span-full text-center py-12 backdrop-blur-md bg-white/20 rounded-xl">
+                <p className="text-slate-600">No rooms created yet</p>
               </div>
-
-              <div className="max-w-xl mx-auto">
-                <div className="flex items-center space-x-2 mb-6">
-                  <input
-                    type="text"
-                    value={inviteLink}
-                    readOnly
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg bg-gray-50"
-                  />
-                  <button
-                    onClick={handleCopyLink}
-                    className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    <Copy className="w-5 h-5 text-gray-600" />
-                  </button>
-                </div>
-
-                <div className="space-y-4">
-                  <Link
-                    href={`/room/${inviteLink.split("/").pop()}`}
-                    className="w-full inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    Enter Room <ArrowRight className="ml-2 w-5 h-5" />
-                  </Link>
-                  <Link
-                    href="/rooms"
-                    className="w-full inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    View All Rooms
-                  </Link>
-                </div>
-              </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </main>
     </div>

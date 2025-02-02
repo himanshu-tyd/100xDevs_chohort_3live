@@ -13,3 +13,12 @@ body {
   margin: 0;
   box-sizing: border-box;
 }
+
+.gradient-background {
+  background: rgb(174,238,236);
+  background: linear-gradient(138deg, rgba(174,238,236,1) 0%, rgba(255,201,208,1) 54%, rgba(86,197,255,1) 100%);
+}
+
+.clicked-effect {
+  @apply hover:scale-105 active:scale-95  transition-all duration-300 transform;
+}

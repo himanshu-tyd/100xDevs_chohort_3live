@@ -46,7 +46,7 @@ export class DrawGame {
     this.existingShapes = await getShapes(this.roomId);
     this.clearCanvas();
   }
-
+    
   allLines: { x: number; y: number; strokeColor: string }[][] = [];
   currentLine: { x: number; y: number; strokeColor: string }[] = [];
 

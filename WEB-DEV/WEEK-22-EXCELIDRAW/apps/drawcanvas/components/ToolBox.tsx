@@ -1,22 +1,81 @@
-import React, { useState } from "react";
+import React from "react";
+import { LucideIcon } from "lucide-react";
 
-const ToolBox = ({ item, handleClick, currentShape }) => {
+interface ToolBoxProps {
+  item: {
+    name: string;
+    icon: React.ReactNode;
+  };
+  handleClick: (name: string) => void;
+  currentShape: string | null;
+  theme: "light" | "dark";
+}
 
-  
+const ToolBox: React.FC<ToolBoxProps> = ({
+  item,
+  handleClick,
+  currentShape,
+  theme,
+}) => {
+  const isSelected = currentShape === item.name;
+  const isDark = theme === "dark";
 
   return (
     <div
-      className={`cursor-pointer hover:bg-indigo-100 px-2 py-2 rounded-md group duration-300 transition-all ${
-        currentShape == item.name ? "bg-indigo-100" : "bg-white"
-      }  `}
-      onClick={() => {
-        handleClick(item.name);
+      className={`
+        relative cursor-pointer px-2 py-2 rounded-md group 
+        transition-all duration-300 
+        ${
+          isSelected
+            ? //this is for dark mode
+              isDark
+              ? "bg-[#16161a] hover:bg-indigo-200"
+              : "bg-indigo-100 hover:bg-[#9191b1]"
+            : //this is for light mode
+              isDark
+              ? "bg-[#232329]  hover:bg-[#16161a]"
+              : "bg-white hover:bg-indigo-50"
+        }
+
+
+
+      `}
+      onClick={() => handleClick(item.name)}
+      role="button"
+      tabIndex={0}
+      aria-label={`Select ${item.name} tool`}
+      aria-pressed={String(isSelected)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleClick(item.name);
+        }
       }}
     >
-      <span className="!text-[12px]   text-black  relative ">{item.icon}</span>
+      {/* Tool Icon */}
       <span
-        className=" capitalize absolute top-0 -translate-x-5 translate-y-10 bg-gray-950 text-gray-50
-            text-[9px] hidden group-hover:inline-block p-1 rounded-md  "
+        className={`
+          block relative text-base
+          ${isDark ? "text-slate-200  " : "text-[#232329]"}
+          ${isSelected && !isDark && "text-indigo-900"}
+        `}
+      >
+        {item.icon}
+      </span>
+
+      {/* Tooltip */}
+      <span
+        className={`
+          capitalize absolute left-1/2 -translate-x-1/2 -bottom-8
+          text-xs py-1 px-2 rounded-md whitespace-nowrap
+          opacity-0 group-hover:opacity-100
+          transition-all duration-200
+          ${
+            isDark
+              ? "bg-[#282830] text-indigo-50"
+              : "bg-white text-slate-900 shadow-lg"
+          }
+        `}
       >
         {item.name}
       </span>
