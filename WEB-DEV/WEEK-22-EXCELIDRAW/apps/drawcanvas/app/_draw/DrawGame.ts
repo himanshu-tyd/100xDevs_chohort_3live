@@ -380,6 +380,19 @@ export class DrawGame {
 
           break;
 
+        case "pencil":
+          shape.points.forEach(line => {
+            this.ctx.beginPath();
+            this.ctx.moveTo(line[0].x, line[0].y);
+            for (let i = 1; i < line.length; i++) {
+              this.ctx.strokeStyle = line[0].strokeColor;
+              this.ctx.lineTo(line[i].x, line[i].y);
+            }
+            this.ctx.stroke();
+          });
+
+          break;
+
         default:
           break;
       }
