@@ -12,6 +12,8 @@ export class DrawGame {
   private startX: number;
   private startY: number;
   private seletedTool: shapesType = null;
+  private strokeColor: string = "";
+  private fillColor: string = "";
 
   constructor(canvas: HTMLCanvasElement, roomId: string, socket: WebSocket) {
     this.canvas = canvas;
@@ -31,11 +33,23 @@ export class DrawGame {
     this.seletedTool = took;
   }
 
+  setStrokeColor(color: string) {
+    this.strokeColor = `#${color}`;
+  }
+
+  setFillColor(color: string) {
+    this.fillColor = `#${color}`;
+  }
+
   //geting existing shapes from backend
   async inittDraw() {
     this.existingShapes = await getShapes(this.roomId);
     this.clearCanvas();
   }
+
+  allLines: { x: number; y: number; strokeColor: string }[][] = [];
+  currentLine: { x: number; y: number; strokeColor: string }[] = [];
+
 
   //init socket handler
   initHandler() {
@@ -52,6 +66,7 @@ export class DrawGame {
   }
   getMouseProp = (e: MouseEvent) => {
     const rect = this.canvas.getBoundingClientRect();
+
     return {
       x: e.clientX - rect.left,
       y: e.clientY - rect.top,
@@ -66,6 +81,11 @@ export class DrawGame {
       const position = this.getMouseProp(e);
       this.startX = position.x;
       this.startY = position.y;
+
+      this.currentLine = [
+        { x: this.startX, y: this.startY, strokeColor: this.strokeColor },
+      ]; // Start a new stroke
+      this.allLines.push(this.currentLine);
     });
 
     //mouse move handler
@@ -76,12 +96,22 @@ export class DrawGame {
 
       const w = position.x - this.startX;
       const h = position.y - this.startY;
+
       this.clearCanvas();
 
       switch (this.seletedTool) {
         case "square":
-          this.ctx.strokeRect(this.startX, this.startY, w, h);
+          this.ctx.strokeStyle = this.strokeColor;
 
+          console.log("this is fill color", this.fillColor!);
+
+          console.log(this.fillColor !== "#FFFFFF");
+          if (this.fillColor !== "#FFFFFF") {
+            this.ctx.fillStyle = this.fillColor;
+            this.ctx.fillRect(this.startX, this.startY, w, h);
+          }
+
+          this.ctx.strokeRect(this.startX, this.startY, w, h);
           break;
 
         case "eclipse":
@@ -90,7 +120,37 @@ export class DrawGame {
           const centerY = this.startY + radius;
           this.ctx.beginPath();
           this.ctx.arc(centerX, centerY, Math.abs(radius), 0, Math.PI * 2);
+          if (this.fillColor !== "#FFFFFF") {
+            this.ctx.fillStyle = this.fillColor;
+            this.ctx.fill();
+          }
           this.ctx.stroke();
+
+          this.ctx.closePath();
+
+          break;
+
+        case "pencil":
+          this.currentLine.push({
+            x: position.x,
+            y: position.y,
+            strokeColor: this.strokeColor,
+          });
+
+          this.ctx.beginPath();
+          this.ctx.lineJoin = "round";
+          this.ctx.lineCap = "round";
+          this.ctx.lineWidth = 2;
+
+          this.allLines.forEach((line) => {
+            this.ctx.beginPath();
+            this.ctx.moveTo(line[0].x, line[0].y);
+            for (let i = 1; i < line.length; i++) {
+              this.ctx.strokeStyle = line[0].strokeColor;
+              this.ctx.lineTo(line[i].x, line[i].y);
+            }
+            this.ctx.stroke();
+          });
 
           break;
 
@@ -98,9 +158,16 @@ export class DrawGame {
           this.ctx.beginPath();
           this.ctx.moveTo(this.startX, this.startY);
 
-          this.ctx.lineTo(this.startX - w / 2, this.startY + h);
-          this.ctx.lineTo(this.startX + w / 2, this.startY + h);
+          this.ctx.lineTo(this.startX - w / 2, this.startY + h / 2);
+          this.ctx.lineTo(this.startX + w / 2, this.startY + h / 2);
+
+          if (this.fillColor !== "#FFFFFF") {
+            this.ctx.fillStyle = this.fillColor;
+            this.ctx.fill();
+          }
+
           this.ctx.closePath();
+          this.ctx.strokeStyle = this.strokeColor;
           this.ctx.lineWidth = 1;
           this.ctx.stroke();
 
@@ -112,7 +179,12 @@ export class DrawGame {
           this.ctx.lineTo(this.startX - w / 2, this.startY + h / 2);
           this.ctx.lineTo(this.startX, this.startY + h);
           this.ctx.lineTo(this.startX + w / 2, this.startY + h / 2);
+          if (this.fillColor !== "#FFFFFF") {
+            this.ctx.fillStyle = this.fillColor;
+            this.ctx.fill();
+          }
           this.ctx.closePath();
+          this.ctx.strokeStyle = this.strokeColor;
           this.ctx.lineWidth = 1;
           this.ctx.stroke();
 
@@ -189,6 +261,11 @@ export class DrawGame {
               y: this.startY,
               width: w,
               height: h,
+              isFill: Boolean(
+                this.fillColor && this.fillColor.toUpperCase() !== "#FFFFFF"
+              ),
+              fillColor: this.fillColor,
+              strokeColor: this.strokeColor,
             };
           }
           break;
@@ -203,9 +280,24 @@ export class DrawGame {
               type: "eclipse",
               centerX: centerX,
               centerY: centerY,
+              isFill: Boolean(
+                this.fillColor && this.fillColor.toUpperCase() !== "#FFFFFF"
+              ),
+              fillColor: this.fillColor,
+              strokeColor: this.strokeColor,
               radius: Math.abs(radius),
             };
           }
+
+          break;
+
+        case "pencil":
+          this.currentLine = [];
+          shape = {
+            type: "pencil",
+            points: this.allLines,
+            strokeColor: this.strokeColor,
+          };
 
           break;
 
@@ -219,6 +311,9 @@ export class DrawGame {
               lineToLeftY: this.startY + h / 2,
               lineToRightX: this.startX + w / 2,
               lineToRightY: this.startY + h / 2,
+              isFill: Boolean(this.fillColor !== "#FFFFFF"),
+              fillColor: this.fillColor,
+              strokeColor: this.strokeColor,
             };
           }
           break;
@@ -235,6 +330,9 @@ export class DrawGame {
               buttonLeftY: this.startY + h,
               topRightX: this.startX + w / 2,
               topRightY: this.startY + h / 2,
+              isFill: Boolean(this.fillColor !== "#FFFFFF"),
+              fillColor: this.fillColor,
+              strokeColor: this.strokeColor,
             };
           }
           break;
@@ -314,7 +412,14 @@ export class DrawGame {
     this.existingShapes?.map((shape) => {
       switch (shape.type) {
         case "square":
+          this.ctx.strokeStyle = shape.strokeColor;
+
+          if (shape.isFill) {
+            this.ctx.fillStyle = shape.fillColor;
+            this.ctx.fillRect(shape.x, shape.y, shape.width, shape.height);
+          }
           this.ctx.strokeRect(shape.x, shape.y, shape.width, shape.height);
+
           break;
 
         case "eclipse":
@@ -326,6 +431,12 @@ export class DrawGame {
             0,
             Math.PI * 2
           );
+
+          if (shape.isFill) {
+            this.ctx.fillStyle = shape.fillColor;
+            this.ctx.fill();
+          }
+          this.ctx.strokeStyle = shape.strokeColor;
           this.ctx.stroke();
           this.ctx.closePath();
           break;
@@ -335,7 +446,12 @@ export class DrawGame {
           this.ctx.moveTo(shape.moveX, shape.moveY);
           this.ctx.lineTo(shape.lineToLeftX, shape.lineToLeftY);
           this.ctx.lineTo(shape.lineToRightX, shape.lineToRightY);
+          if (shape.isFill) {
+            this.ctx.fillStyle = shape.fillColor;
+            this.ctx.fill();
+          }
           this.ctx.closePath();
+          this.ctx.strokeStyle = shape.strokeColor;
           this.ctx.stroke();
 
           break;
@@ -346,7 +462,12 @@ export class DrawGame {
           this.ctx.lineTo(shape.topLeftX, shape.topLeftY);
           this.ctx.lineTo(shape.buttonLeftX, shape.buttonLeftY);
           this.ctx.lineTo(shape.topRightX, shape.topRightY);
+          if (shape.isFill) {
+            this.ctx.fillStyle = shape.fillColor;
+            this.ctx.fill();
+          }
           this.ctx.closePath();
+          this.ctx.strokeStyle = shape.strokeColor;
           this.ctx.stroke();
 
           break;
