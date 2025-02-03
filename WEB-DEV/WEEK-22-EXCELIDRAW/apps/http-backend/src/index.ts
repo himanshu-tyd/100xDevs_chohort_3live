@@ -42,7 +42,7 @@ app.post("/signup", async (req, res) => {
     });
 
     if (exits) {
-      res.status(409).json({
+      res.json({
         success: false,
         message: "User already exits",
       });
@@ -90,10 +90,8 @@ app.post("/signin", async (req, res) => {
       },
     });
 
-    console.log(user);
-
     if (!user) {
-      res.status(403).json({
+      res.json({
         success: false,
         message: "Invalid Creadentials",
       });
@@ -153,11 +151,16 @@ app.post("/room", middleware, async (req, res) => {
       },
     });
 
+
+
     if (exits) {
-      res.status(409).json({
-        success: false,
-        message: "Room already exits",
-      });
+
+      res
+        .json({
+          success: false,
+          message: "Room already exits",
+        })
+        .end();
 
       return;
     }
@@ -224,6 +227,34 @@ app.get("/room/:slug", async (req, res) => {
   res.json({
     room,
   });
+});
+
+app.get("/room", middleware, async (req, res) => {
+  //@ts-ignore
+  const userId = req?.userId;
+
+  try {
+    const room = await prismaClient.room.findMany({
+      where: {
+        adminId: userId,
+      },
+    });
+
+    if (!room) {
+      res.json({ succes: false, message: "room not found" });
+    }
+
+    res.json({
+      succes: true,
+      message: "all rooms found successfully",
+      data: room,
+    });
+  } catch (e) {
+    console.log(e);
+    if (e instanceof Error) console.log(e.message);
+
+    res.status(500).json({ success: false, message: "intenal server error" });
+  }
 });
 
 app.listen(port, () => {

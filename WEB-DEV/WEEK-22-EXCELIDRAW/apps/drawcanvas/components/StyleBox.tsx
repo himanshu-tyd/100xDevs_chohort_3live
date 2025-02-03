@@ -35,7 +35,7 @@ const StyleBox = ({
   console.log(selectedBackground, selectedColor);
 
   return (
-    <div className="flex flex-col px-2 py-3 font-normal text-[12px] capitalize space-y-1">
+    <div className="flex flex-col px-2 py-3 font-normal text-[10px] capitalize space-y-1">
       <span>{items.title}</span>
       <div className="flex items-center gap-2">
         {items.element.map((c) => (
@@ -48,6 +48,7 @@ const StyleBox = ({
         ))}
         <div className="w-[2px] h-2 rounded-lg bg-gray-300"></div>
         <div
+        
           className={`w-7 h-7  rounded-md outline-2 outline-indigo-100 outline `}
           style={{
             backgroundColor: stroke

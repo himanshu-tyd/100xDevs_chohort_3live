@@ -1,5 +1,5 @@
 import React from "react";
-import { LucideIcon } from "lucide-react";
+
 
 interface ToolBoxProps {
   item: {
@@ -23,9 +23,9 @@ const ToolBox: React.FC<ToolBoxProps> = ({
   return (
     <div
       className={`
-        relative cursor-pointer px-2 py-2 rounded-md group 
+        relative cursor-pointer p-2 rounded-md group 
         transition-all duration-300 
-        ${
+         ${
           isSelected
             ? //this is for dark mode
               isDark
@@ -35,16 +35,9 @@ const ToolBox: React.FC<ToolBoxProps> = ({
               isDark
               ? "bg-[#232329]  hover:bg-[#16161a]"
               : "bg-white hover:bg-indigo-50"
-        }
-
-
-
-      `}
+          }
+        `}
       onClick={() => handleClick(item.name)}
-      role="button"
-      tabIndex={0}
-      aria-label={`Select ${item.name} tool`}
-      aria-pressed={String(isSelected)}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();

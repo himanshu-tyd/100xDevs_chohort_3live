@@ -50,9 +50,11 @@ export type shapes =
       moveY: number;
       lineToX: number;
       lineToY: number;
+      strokeColor:string
     }
   | {
       type: "arrow";
+      strokeColor:string
       moveToX: number;
       moveToY: number;
       mainLineX: number;

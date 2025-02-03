@@ -49,8 +49,8 @@ const Canvas = ({ roomId, socket }: CanvasProps) => {
     }
   }, [canvasRef, roomId, socket]);
 
-  const handleSetShape = (shapeName: shapesType) => {
-    setSelectedShape(shapeName);
+  const handleSetShape = (shapeName: string) => {
+    setSelectedShape(shapeName as shapesType);
   };
 
   const toggleTheme = () => {
@@ -80,7 +80,7 @@ const Canvas = ({ roomId, socket }: CanvasProps) => {
         ))}
       </div>
       <div 
-        className={`w-[218px] z-20 h-[468px] rounded-lg top-0 shadow-sm fixed left-0 translate-x-5 translate-y-[calc(100%-75%)] 
+        className={`w-[212px] z-20 h-[468px] rounded-lg top-0 shadow-sm fixed left-0 translate-x-5 translate-y-[calc(100%-75%)] 
           ${theme === "light" 
             ? "bg-white border-slate-200 border-[.4px]" 
             : "bg-[#232329] text-white border-slate-700 border-[.4px]"

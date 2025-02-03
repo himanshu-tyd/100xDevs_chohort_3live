@@ -20,5 +20,14 @@ body {
 }
 
 .clicked-effect {
-  @apply hover:scale-105 active:scale-95  transition-all duration-300 transform;
+  transition: all 300ms;
+  transform: scale(1);
+}
+
+.clicked-effect:hover {
+  transform: scale(1.05);
+}
+
+.clicked-effect:active {
+  transform: scale(0.95);
 }

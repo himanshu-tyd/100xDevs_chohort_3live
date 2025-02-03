@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { Paintbrush, ArrowLeft } from "lucide-react";
 import { SingUpType } from "@/types/types";
 import { useSignUp } from "@/hooks/useSignUp";
-import ButtonLoader from "@/components/ButtonLoader";
-import IsAuth from "@/HOC/IsAuth";
+  import ButtonLoader from "@/components/ButtonLoader";
+import { getContext } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+
 
 function SignUp() {
   const [formData, setFormData] = useState<SingUpType>({
@@ -14,6 +16,16 @@ function SignUp() {
     password: "",
     name: "",
   });
+
+  const {user}=getContext()
+
+  const router = useRouter();
+
+  useLayoutEffect(() => {
+    if (!user?.id) {
+      router.push("/sign-up");
+    }
+  }, [user?.id,router]);
 
   const { loading, singUp } = useSignUp();
 
@@ -106,25 +118,7 @@ function SignUp() {
                 </div>
               </div>
 
-              <div className="flex items-center">
-                <input
-                  id="terms"
-                  name="terms"
-                  type="checkbox"
-                  required
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-white/30 rounded"
-                />
-                <label htmlFor="terms" className="ml-2 block text-sm text-slate-700">
-                  I agree to the{" "}
-                  <Link href="#" className="text-blue-600 hover:text-blue-500 transition-colors">
-                    Terms of Service
-                  </Link>{" "}
-                  and{" "}
-                  <Link href="#" className="text-blue-600 hover:text-blue-500 transition-colors">
-                    Privacy Policy
-                  </Link>
-                </label>
-              </div>
+             
 
               <div>
                 <button
@@ -151,4 +145,4 @@ function SignUp() {
   );
 }
 
-export default IsAuth(SignUp);
+export default SignUp

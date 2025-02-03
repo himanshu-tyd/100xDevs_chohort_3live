@@ -28,4 +28,8 @@ export type canvasType = {
   h: number;
 };
 
+
+
+
+
 export type shapesType = (typeof shapes)[number]["name"] | null;

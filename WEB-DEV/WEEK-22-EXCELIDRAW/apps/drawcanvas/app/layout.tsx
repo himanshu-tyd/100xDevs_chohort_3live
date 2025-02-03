@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Canvas | Drawer",
+  title: "100x | Canvas",
   description: "Make your canvas",
 };
 

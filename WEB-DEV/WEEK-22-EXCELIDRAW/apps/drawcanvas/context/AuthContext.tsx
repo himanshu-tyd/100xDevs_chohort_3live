@@ -32,5 +32,13 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 export default  AuthContextProvider
 
 export const getContext=()=>{
-  return useContext(AuthContext)
+  const contex= useContext(AuthContext)
+
+  if(contex)
+  {
+    return contex
+  }else{
+    throw new Error('Please Make sure you are login')
+  }
+
 }

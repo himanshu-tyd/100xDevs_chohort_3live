@@ -1,5 +1,6 @@
-import Canvas from "@/app/_componets/Canvas";
 import RoomCanvas from "@/app/_componets/RoomCanvas";
+import { redirect } from "next/navigation";
+import { user } from "@/lib/helper";
 
 interface canvasprops {
   params: {
@@ -7,14 +8,13 @@ interface canvasprops {
   };
 }
 
-const CanvasPage = async({ params }: canvasprops) => {
-  const roomId =(await params).roomId;
+const CanvasPage = async ({ params }: canvasprops) => {
+  if (!user) {
+    redirect("/sign-in");
+  }
 
-  
-
-console.log(roomId)
-
-  return <RoomCanvas roomId={roomId}  />
+  const roomId = (await params).roomId;
+  return <RoomCanvas roomId={roomId} />;
 };
 
 export default CanvasPage;

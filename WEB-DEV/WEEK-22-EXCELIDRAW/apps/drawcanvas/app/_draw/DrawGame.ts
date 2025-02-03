@@ -46,10 +46,9 @@ export class DrawGame {
     this.existingShapes = await getShapes(this.roomId);
     this.clearCanvas();
   }
-    
+
   allLines: { x: number; y: number; strokeColor: string }[][] = [];
   currentLine: { x: number; y: number; strokeColor: string }[] = [];
-
 
   //init socket handler
   initHandler() {
@@ -100,12 +99,14 @@ export class DrawGame {
       this.clearCanvas();
 
       switch (this.seletedTool) {
+        case "hand":
+          
+         
+
+          break;
+
         case "square":
           this.ctx.strokeStyle = this.strokeColor;
-
-          console.log("this is fill color", this.fillColor!);
-
-          console.log(this.fillColor !== "#FFFFFF");
           if (this.fillColor !== "#FFFFFF") {
             this.ctx.fillStyle = this.fillColor;
             this.ctx.fillRect(this.startX, this.startY, w, h);
@@ -191,6 +192,7 @@ export class DrawGame {
           break;
         case "line":
           this.ctx.beginPath();
+          this.ctx.strokeStyle = this.strokeColor;
           this.ctx.moveTo(this.startX, this.startY);
           this.ctx.lineTo(position.x, position.y);
           this.ctx.closePath();
@@ -202,7 +204,6 @@ export class DrawGame {
           const arrowSize = 15;
           const endX = position.x;
           const endY = position.y;
-          console.log(endX, endY);
 
           //this will give us angel of end line
           const arrowAngle = Math.atan2(h, w);
@@ -215,6 +216,8 @@ export class DrawGame {
 
           const line2X = endX - arrowSize * Math.cos(arrowAngle + Math.PI / 6);
           const line2Y = endY - arrowSize * Math.sin(arrowAngle + Math.PI / 6);
+
+          this.ctx.strokeStyle = this.strokeColor;
 
           //main line
           this.ctx.beginPath();
@@ -344,6 +347,7 @@ export class DrawGame {
               moveY: this.startY,
               lineToX: position.x,
               lineToY: position.y,
+              strokeColor: this.strokeColor,
             };
           }
           break;
@@ -367,6 +371,7 @@ export class DrawGame {
 
           shape = {
             type: "arrow",
+            strokeColor: this.strokeColor,
             moveToX: this.startX,
             moveToY: this.startY,
             mainLineX: endX,
@@ -474,6 +479,7 @@ export class DrawGame {
 
         case "line":
           this.ctx.beginPath();
+          this.ctx.strokeStyle = shape.strokeColor;
           this.ctx.moveTo(shape.moveX, shape.moveY);
           this.ctx.lineTo(shape.lineToX, shape.lineToY);
           this.ctx.closePath();
@@ -483,6 +489,7 @@ export class DrawGame {
         case "arrow":
           //main line
           this.ctx.beginPath();
+          this.ctx.strokeStyle = shape.strokeColor;
           this.ctx.moveTo(shape.moveToX, shape.moveToY);
           this.ctx.lineTo(shape.mainLineX, shape.mainLineY);
           this.ctx.stroke();
@@ -502,7 +509,7 @@ export class DrawGame {
           break;
 
         case "pencil":
-          shape.points.forEach(line => {
+          shape.points.forEach((line) => {
             this.ctx.beginPath();
             this.ctx.moveTo(line[0].x, line[0].y);
             for (let i = 1; i < line.length; i++) {

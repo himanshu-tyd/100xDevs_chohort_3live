@@ -11,25 +11,22 @@ export const useCreatRoom = () => {
   const createRoom = async (data: roomType) => {
     try {
       setLoading(true);
-      const res = await api.post(`${BASE_URL_HTTP}/room`, data);
+      const res = await api.post(`/room`, data);
 
       const context = res.data;
 
       if (!context.success) {
         toast.error(context.message);
-        return
+        return;
       }
 
       toast.success(context.message);
 
+      route.push(`/canvas/${context.data}`);
 
-      
-
-    //   route.push("/sign-in");
-
-    } catch (e: unknown) {
+    } catch (e) {
       console.log(e);
-
+      if (e instanceof Error) toast.error(e.message);
       return null;
     } finally {
       setLoading(false);

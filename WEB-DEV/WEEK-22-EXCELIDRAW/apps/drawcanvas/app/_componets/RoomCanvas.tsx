@@ -3,6 +3,7 @@
 import { BASE_WS_URL } from "@/lib/config";
 import React, { useEffect, useState } from "react";
 import Canvas from "./Canvas";
+import { token } from "@/lib/helper";
 
 interface roomProps {
   roomId: string;
@@ -10,7 +11,7 @@ interface roomProps {
 
 const RoomCanvas = ({ roomId }: roomProps) => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
-  const token=localStorage.getItem('token')
+
 
   useEffect(() => {
     const ws = new WebSocket(`${BASE_WS_URL}?token=${token}`);
@@ -25,12 +26,12 @@ const RoomCanvas = ({ roomId }: roomProps) => {
         })
       );
     };
-  }, []);
+  }, [roomId]);
 
   if (!socket) {
     return (
       <div className="flex w-screen h-screen items-center justify-center">
-        <span className="text-indigo-500 ">
+        <span className="text-purple-600 ">
           We are getting you shape please wait.🙂
         </span>
       </div>
