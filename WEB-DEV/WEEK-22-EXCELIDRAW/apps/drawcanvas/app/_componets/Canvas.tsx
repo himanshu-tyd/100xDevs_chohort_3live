@@ -22,8 +22,11 @@ const Canvas = ({ roomId, socket }: CanvasProps) => {
     h: window.innerHeight,
   });
   const [selectedColor, setSelectedColor] = useState<string>("1E1E1E");
-  const [selectedBackground, setSelectedBackground] = useState<string>("FFFFFF");
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const [selectedBackground, setSelectedBackground] =
+    useState<string>("FFFFFF");
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  const isDark = theme === "light";
 
   useEffect(() => {
     const windowSize = () => {
@@ -59,16 +62,19 @@ const Canvas = ({ roomId, socket }: CanvasProps) => {
 
   return (
     <div className="flex w-screen h-screen justify-center">
-      <div className={`
+      <div
+        className={`
         p-2 flex items-center justify-center gap-2 
         fixed top-4 left-1/2 -translate-x-1/2 z-20
         rounded-xl shadow-lg
-        ${theme === "light" 
-          ? "bg-white/95 border border-slate-200" 
-          : "bg-[#232329] border border-slate-700"
+        ${
+          isDark
+            ? "bg-white/95 border border-slate-200"
+            : "bg-[#232329] border border-slate-700"
         }
         backdrop-blur-sm transition-colors duration-300
-      `}>
+      `}
+      >
         {shapes.map((item, index) => (
           <ToolBox
             key={index}
@@ -79,11 +85,12 @@ const Canvas = ({ roomId, socket }: CanvasProps) => {
           />
         ))}
       </div>
-      <div 
+      <div
         className={`w-[212px] z-20 h-[468px] rounded-lg top-0 shadow-sm fixed left-0 translate-x-5 translate-y-[calc(100%-75%)] 
-          ${theme === "light" 
-            ? "bg-white border-slate-200 border-[.4px]" 
-            : "bg-[#232329] text-white border-slate-700 border-[.4px]"
+          ${
+            isDark
+              ? "bg-white border-slate-200 border-[.4px]"
+              : "bg-[#232329] text-white border-slate-700 border-[.4px]"
           }`}
       >
         {styleElement.map((item, i) => (
@@ -91,7 +98,7 @@ const Canvas = ({ roomId, socket }: CanvasProps) => {
             key={i}
             items={{
               title: item.title,
-              element: [...item.element]
+              element: [...item.element],
             }}
             selectedBackground={selectedBackground}
             setSelectedBackground={setSelectedBackground}
@@ -100,19 +107,23 @@ const Canvas = ({ roomId, socket }: CanvasProps) => {
           />
         ))}
       </div>
-      <div className="fixed top-0 right-0 -translate-x-10 translate-y-5 z-20 rounded-full bg-white shadow-md border border-slate-200 p-2 flex items-center justify-center clicked-effect">
-        <button 
+      <div
+        className={`fixed top-5 z-20 right-5 -translate-x-5 rounded-full  shadow-md border  p-2 flex items-center justify-center clicked-effect ${isDark ? 
+          "bg-white/95 border-slate-200 " : "bg-[#232329] text-white/95 border-slate-500 "
+        } `}
+      >
+        <button
           onClick={toggleTheme}
-          aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+          aria-label={`Switch to ${isDark ? "dark" : "light"} mode`}
         >
-          {theme === "light" ? <Moon /> : <Sun />}
+          {isDark ? <Moon /> : <Sun />}
         </button>
       </div>
       <canvas
         ref={canvasRef}
         height={canvasSize.h}
         width={canvasSize.w}
-        className={`fixed block ${theme === "light" ? "bg-slate-50" : "bg-[#121212]"}`}
+        className={`fixed block ${isDark ? "bg-slate-50" : "bg-[#121212]"}`}
       />
     </div>
   );

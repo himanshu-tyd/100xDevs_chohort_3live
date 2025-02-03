@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Button from "@/components/Button";
 import { getFullYear } from "@/lib/helper";
@@ -6,10 +6,8 @@ import { ArrowRight, Paintbrush, Share2, Users, LogIn } from "lucide-react";
 import Link from "next/link";
 import { getContext } from "@/context/AuthContext";
 
-
-const  LandingPage100xCanvas=()=> {
-
-  const {user}=getContext()
+const LandingPage100xCanvas = () => {
+  const { user } = getContext();
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-[138deg] from-[#AEEAEC] via-[#FFC9D0] to-[#56C5FF]">
@@ -17,7 +15,9 @@ const  LandingPage100xCanvas=()=> {
         <div className="container mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center justify-center">
             <Paintbrush className="w-6 h-6 mr-2 text-slate-800" />
-            <span className="font-bold text-xl text-slate-800">100x Canvas</span>
+            <span className="font-bold text-xl text-slate-800">
+              100x Canvas
+            </span>
           </Link>
 
           <div className="hidden md:flex items-center gap-6">
@@ -46,7 +46,9 @@ const  LandingPage100xCanvas=()=> {
               <div className="flex items-center gap-4">
                 <div className="hidden sm:block">
                   <span className="text-sm text-slate-800">Welcome back, </span>
-                  <span className="font-medium text-slate-800">{user.name}</span>
+                  <span className="font-medium text-slate-800">
+                    {user.name}
+                  </span>
                 </div>
                 <Link
                   href="/canvas"
@@ -102,7 +104,7 @@ const  LandingPage100xCanvas=()=> {
                     <ArrowRight className="h-5 w-5 group-hover:translate-x-0.5 transition-transform text-purple-600" />
                   </Link>
                 </Button>
-                <Button className="bg-transparent bg-blue-500 border-2 hover:border-slate-700 text-slate-700 hover:text-slate-700 transition-all duration-300 transform hover:scale-105  hover:bg-white ">
+                <Button className=" bg-blue-500 border-2 hover:border-slate-700 text-slate-700 hover:text-slate-700 transition-all duration-300 transform hover:scale-105  hover:bg-white ">
                   Explore Gallery
                 </Button>
               </div>
@@ -116,11 +118,11 @@ const  LandingPage100xCanvas=()=> {
                 See It in Action
               </h2>
               <div className="relative w-full max-w-4xl aspect-video rounded-xl overflow-hidden shadow-2xl">
-                <video 
+                <video
                   className="w-full h-full object-cover"
-                  autoPlay 
-                  loop 
-                  muted 
+                  autoPlay
+                  loop
+                  muted
                   playsInline
                 >
                   <source src="/demo-canvas.mp4" type="video/mp4" />
@@ -129,12 +131,16 @@ const  LandingPage100xCanvas=()=> {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
               </div>
               <p className="text-slate-700 text-lg text-center max-w-2xl">
-                Watch how easy it is to bring your ideas to life with our intuitive drawing tools and collaborative features.
+                Watch how easy it is to bring your ideas to life with our
+                intuitive drawing tools and collaborative features.
               </p>
             </div>
           </div>
         </section>
-        <section id="features" className="w-full py-12 md:py-24 lg:py-32 backdrop-blur-md bg-white/10">
+        <section
+          id="features"
+          className="w-full py-12 md:py-24 lg:py-32 backdrop-blur-md bg-white/10"
+        >
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12 text-slate-800">
               Why Choose <span className="text-blue-600">100x Canvas</span>?
@@ -163,7 +169,9 @@ const  LandingPage100xCanvas=()=> {
         <div className="container px-4 md:px-6 flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center space-x-4">
             <Paintbrush className="w-6 h-6 text-slate-700" />
-            <span className="text-sm text-slate-700">© {getFullYear()} 100x Canvas</span>
+            <span className="text-sm text-slate-700">
+              © {getFullYear()} 100x Canvas
+            </span>
           </div>
           <div className="mt-4 md:mt-0 text-sm text-center md:text-right text-slate-600">
             <p>This project was created as part of the 100xDev course.</p>
@@ -173,15 +181,15 @@ const  LandingPage100xCanvas=()=> {
       </footer>
     </div>
   );
-}
+};
 
 interface FeatureCardProps {
-  icon:React.ReactNode,
-  title:string,
-  description:string
+  icon: React.ReactNode;
+  title: string;
+  description: string;
 }
 
-function FeatureCard({ icon ,title, description }: FeatureCardProps) {
+function FeatureCard({ icon, title, description }: FeatureCardProps) {
   return (
     <div className="flex flex-col items-center text-center p-6 rounded-xl backdrop-blur-md bg-white/20 hover:bg-white/30 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
       <div className="mb-4">{icon}</div>
@@ -191,5 +199,4 @@ function FeatureCard({ icon ,title, description }: FeatureCardProps) {
   );
 }
 
-
-export default LandingPage100xCanvas
+export default LandingPage100xCanvas;
