@@ -1,84 +1,120 @@
-# Turborepo starter
+# 🎨 DrawCanvas
 
-This is an official starter Turborepo.
+A real-time collaborative drawing application built with Next.js and WebSocket technology. This project was developed as part of the 100xDevs Cohort 3.0 program.
 
-## Using this example
+## ✨ Features
 
-Run the following command:
+- 🖌️ Real-time drawing collaboration
+- 🎯 Multiple tool options (Pen, Line, Rectangle, Circle)
+- 🔐 User authentication with secure sessions
+- 🏠 Create or join drawing rooms with unique room codes
+- 📱 Responsive design for desktop and mobile devices
 
-```sh
-npx create-turbo@latest
+
+
+## 🚀 Getting Started
+
+1. Clone the repository:
+```bash
+git clone https://github.com/himanshu-tyd/100x-canvas.git
 ```
 
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+2. Install dependencies:
+```bash
+pnpm install
 ```
 
-### Develop
-
-To develop all apps and packages, run the following command:
-
+3. Set up environment variables:
+```bash
+cp .env
 ```
-cd my-turborepo
+
+4. Run the development server:
+```bash
 pnpm dev
 ```
 
-### Remote Caching
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+## 🛠️ Tech Stack
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+- ⚡ Next.js 14 with App Router
+- 🎭 TypeScript for type safety
+- 🎨 Tailwind CSS for styling
+- 🔌 WebSocket for real-time communication
+- 🔒 Jsonwebtoken for authentication
+- 📦 Prisma as ORM
+- 🗄️ PostgreSQL for database
+- 🎯 Canvas API for drawing functionality
+<!-- - ☁️ Vercel for deployment -->
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+## 📁 Project Structure
 
 ```
-npx turbo link
+.
+├── apps/
+│   └── drawcanvas/          # Main Next.js application
+├── packages/
+│   ├── backend-common/      # Shared backend utilities
+│   │   └── src/
+│   ├── common/             # Shared utilities and types
+│   │   └── src/
+│   ├── db/                 # Database configuration and models
+│   │   ├── prisma/
+│   │   │   └── migrations/
+│   │   └── src/
+│   ├── eslint-config/     # Shared ESLint configuration
+│   ├── typescript-config/ # Shared TypeScript configuration
+│   └── ui/               # Shared UI components
+│       └── src/
 ```
 
-## Useful Links
+Key directories:
+- `apps/drawcanvas`: Main Next.js application with all the drawing functionality
+- `packages/backend-common`: Shared backend utilities and helper functions
+- `packages/common`: Shared types, constants, and utility functions
+- `packages/db`: Database schema, migrations, and Prisma configuration
+- `packages/ui`: Reusable React components shared across the application
+- `packages/typescript-config`: Shared TypeScript configuration
+- `packages/eslint-config`: Shared ESLint rules and configuration
 
-Learn more about the power of Turborepo:
+## 🌟 Key Features Explained
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+### Real-time Collaboration
+- Multiple users can draw simultaneously
+- Cursor positions are synced across all users
+- Changes are reflected  for all participants
+
+### Drawing Tools
+- Pen tool with adjustable stroke width
+- Shape tools: Line, Rectangle, Circle
+
+
+### Room Management
+- Create drawing rooms
+- Join existing rooms via unique codes
+
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 👨‍💻 Development Team
+
+This project was developed as part of the 100xDevs Cohort 3.0 program under the mentorship of Harkirat Singh.
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Thanks to [100xDevs](https://100xdevs.com) for the guidance and support
+- Special thanks to Harkirat Singh for the mentorship
+- All the contributors who have helped shape this project

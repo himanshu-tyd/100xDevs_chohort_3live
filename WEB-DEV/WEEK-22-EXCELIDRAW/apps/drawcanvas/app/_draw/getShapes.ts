@@ -1,4 +1,5 @@
 import api from "@/lib/axiosInstance";
+import { messageType } from "@/types/types";
 import { toast } from "sonner";
 
 const getShapes = async (roomId: string) => {
@@ -16,7 +17,13 @@ const getShapes = async (roomId: string) => {
 
     if (!shapes) return;
 
-    const dataShape = shapes?.map((x) => {
+
+    
+
+    const dataShape = shapes?.map((x:messageType) => {
+
+      console.log('xx',x)
+
       const messageData = JSON.parse(x.message);
 
       return messageData.shape;

@@ -6,12 +6,12 @@ import { Paintbrush, ArrowRight, Plus, User } from "lucide-react";
 import { useCreatRoom } from "@/hooks/useCreateRom";
 import ButtonLoader from "@/components/ButtonLoader";
 import { getContext } from "@/context/AuthContext";
-
 import RoomCard from "@/components/RoomCard";
 import useFetchRooms from "@/hooks/useFetchRoom";
 import Loader from "@/components/Loader";
 import Error from "@/components/Error";
-import {  useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { isServer } from "@/lib/helper";
 
 function CreateRoom() {
   const [roomName, setRoomName] = useState("");
@@ -21,13 +21,14 @@ function CreateRoom() {
   const { loading: roomLoader, error, data: rooms } = useFetchRooms();
   const router = useRouter();
 
-
   const handleLogout = () => {
     setUser(null);
+  
+    if(isServer) return
+
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     router.push("/");
-   
   };
 
   useLayoutEffect(() => {
@@ -41,8 +42,6 @@ function CreateRoom() {
     createRoom({ name: roomName });
     setRoomName("");
   };
-
-  
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-[138deg] from-[#AEEAEC] via-[#FFC9D0] to-[#56C5FF]">
@@ -132,7 +131,7 @@ function CreateRoom() {
             <Error lable={error} />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {rooms.map((room ,index) => (
+              {rooms.map((room, index) => (
                 <RoomCard key={index} room={room} />
               ))}
               {rooms.length < 0 && (

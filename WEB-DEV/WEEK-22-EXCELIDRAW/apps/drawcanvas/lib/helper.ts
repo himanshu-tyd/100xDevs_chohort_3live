@@ -1,20 +1,22 @@
-'use client'
+"use client";
 
-export const getFullYear=()=>{
-    return new Date().getFullYear()
-}
+export const getFullYear = () => {
+  return new Date().getFullYear();
+};
 
-export const getUser=()=>{
-    return JSON.parse(localStorage.getItem("user") || "{}")
-}   
+export const isServer: boolean = typeof window == "undefined";
 
-export const getToken=()=>{
-    return localStorage.getItem("token")
-}
+export const getUser = () => {
+  if (!isServer) {
+    return JSON.parse(localStorage.getItem("user") || "{}");
+  }
+};
 
-export const user=getUser()
-export const token=getToken()
+export const getToken = () => {
+  if (!isServer) {
+    return localStorage.getItem("token");
+  }
+};
 
-
-
-
+export const user = getUser();
+export const token = getToken();

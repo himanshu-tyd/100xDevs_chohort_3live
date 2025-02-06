@@ -4,6 +4,7 @@ import { signInType } from "@/types/types";
 import { useState } from "react";
 import { toast } from "sonner";
 import api from "@/lib/axiosInstance";
+import { isServer } from "@/lib/helper";
 
 export const useSignIn = () => {
   const [loading, setLoading] = useState<false | true>(false);
@@ -19,6 +20,9 @@ export const useSignIn = () => {
         return false
       }
       toast.success(context.message);
+
+   
+        if(isServer) return
 
       localStorage.setItem("user", JSON.stringify(context.data));
       localStorage.setItem('token' , context.token)

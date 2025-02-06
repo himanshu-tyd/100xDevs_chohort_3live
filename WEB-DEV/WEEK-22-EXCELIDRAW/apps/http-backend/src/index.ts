@@ -230,6 +230,7 @@ app.get("/room/:slug", async (req, res) => {
 });
 
 app.get("/room", middleware, async (req, res) => {
+
   //@ts-ignore
   const userId = req?.userId;
 

@@ -29,7 +29,7 @@ const NotFound = () => {
           <h2 className="text-3xl font-semibold text-slate-800 mb-6">Page not found</h2>
           
           <p className="text-lg text-slate-700 mb-8 max-w-md mx-auto">
-            Sorry, we couldn't find the page you're looking for. It might have been moved or doesn't exist.
+           {` Sorry, we couldn't find the page you're looking for. It might have been moved or doesn't exist.`}
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

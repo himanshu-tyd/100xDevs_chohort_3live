@@ -1,4 +1,7 @@
+import { shapes as shapeTypes } from "@/app/_draw/shapes";
 import { shapes } from "@/constans";
+
+
 
 export type SingUpType = {
   username: string;
@@ -27,6 +30,13 @@ export type canvasType = {
   w: number;
   h: number;
 };
+
+export type messageType={
+  id:number,
+  roomId:number,
+  message: string,
+  userId:number
+}
 
 
 
