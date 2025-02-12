@@ -1,0 +1,5 @@
+C:\MY-STUF\DEV-LEARNING\COHART-3.O\WEB-3\WEEK-26\RUST-BOOTCAMP\target\debug\deps\libRUST_BOOTCAMP-d5669b7be62e375d.rmeta: src\main.rs
+
+C:\MY-STUF\DEV-LEARNING\COHART-3.O\WEB-3\WEEK-26\RUST-BOOTCAMP\target\debug\deps\RUST_BOOTCAMP-d5669b7be62e375d.d: src\main.rs
+
+src\main.rs:
