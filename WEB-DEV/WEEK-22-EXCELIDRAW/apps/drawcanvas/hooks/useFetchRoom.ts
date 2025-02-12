@@ -1,6 +1,6 @@
 import api from "@/lib/axiosInstance";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
+
 
 const useFetchRooms = () => {
   const [loading, setLoading] = useState<true | false>(false);

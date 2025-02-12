@@ -4,7 +4,7 @@ import { toast } from "sonner";
 
 const getShapes = async (roomId: string) => {
   try {
-    const res = await api.get(`/chats/${roomId}`);
+    const res = await api.get(`$/chats/${roomId}`);
 
     const context = res.data;
 
@@ -17,13 +17,7 @@ const getShapes = async (roomId: string) => {
 
     if (!shapes) return;
 
-
-    
-
-    const dataShape = shapes?.map((x:messageType) => {
-
-      console.log('xx',x)
-
+    const dataShape = shapes?.map((x: messageType) => {
       const messageData = JSON.parse(x.message);
 
       return messageData.shape;

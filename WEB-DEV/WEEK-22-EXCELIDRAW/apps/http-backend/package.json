@@ -4,8 +4,9 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc -b",
+    "add-build": "git add dist",
     "start": "node ./dist/index.js",
-    "dev": "npm run build && npm run start"
+     "dev": "npm run build && npm run start"
   },
   "dependencies": {
     "@repo/db": "workspace:*",
@@ -21,9 +22,16 @@
     "@repo/backend-common": "workspace:*",
     "@repo/common": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@types/express": "^5.0.0"
+    "@types/express": "^5.0.0",
+    "@types/node": "^18.16.19",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^6.0.1"
   },
-  "keywords": [],
+  "pre-commit": [
+    "ts.check",
+    "build",
+    "add-build"
+  ],
   "author": "",
   "license": "ISC",
   "description": ""
