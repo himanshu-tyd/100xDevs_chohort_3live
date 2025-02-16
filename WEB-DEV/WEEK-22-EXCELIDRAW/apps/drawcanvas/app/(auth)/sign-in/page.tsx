@@ -26,8 +26,8 @@ function SignIn() {
   const router = useRouter();
 
   useLayoutEffect(() => {
-    if (!user?.id) {
-      router.push("/sign-in");
+    if (user?.id) {
+      router.push("/canvas");
     }
   }, [user?.id, router]);
 

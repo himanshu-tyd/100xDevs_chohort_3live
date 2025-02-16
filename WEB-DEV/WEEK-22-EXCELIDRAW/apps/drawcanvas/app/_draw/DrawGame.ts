@@ -1,5 +1,4 @@
 import { shapes } from "./shapes";
-import getShapes from "./getShapes";
 import { shapesType } from "@/types/types";
 
 export class DrawGame {
@@ -9,18 +8,25 @@ export class DrawGame {
   private roomId: string;
   private clickMouse: boolean;
   socket: WebSocket;
+  getShapes: (roomId: string) => Promise<any>;
   private startX: number;
   private startY: number;
   private seletedTool: shapesType = null;
   private strokeColor: string = "";
   private fillColor: string = "";
 
-  constructor(canvas: HTMLCanvasElement, roomId: string, socket: WebSocket) {
+  constructor(
+    canvas: HTMLCanvasElement,
+    roomId: string,
+    socket: WebSocket,
+    getShapes: (roomId: string) => Promise<any>
+  ) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d")!;
     this.existingShapes = [];
     this.roomId = roomId;
     this.socket = socket;
+    this.getShapes = getShapes;
     this.clickMouse = false;
     this.startX = 0;
     this.startY = 0;
@@ -43,7 +49,7 @@ export class DrawGame {
 
   //geting existing shapes from backend
   async inittDraw() {
-    this.existingShapes = await getShapes(this.roomId);
+    this.existingShapes = await this.getShapes(this.roomId);
     this.clearCanvas();
   }
 
@@ -100,9 +106,6 @@ export class DrawGame {
 
       switch (this.seletedTool) {
         case "hand":
-          
-         
-
           break;
 
         case "square":

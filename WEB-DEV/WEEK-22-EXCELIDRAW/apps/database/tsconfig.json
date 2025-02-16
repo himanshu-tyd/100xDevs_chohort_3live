@@ -1,0 +1,10 @@
+{
+  "exclude": ["@repo/typescirpt-config/base.json"],
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "paths": {
+      "@repo/database": ["../database/src"]   
+    }
+  }
+}

@@ -4,7 +4,7 @@ import { JWT_SECRET } from "@repo/backend-common/config";
 
 export function middleware(req: Request, res: Response, next: NextFunction) {
   try {
-    const token = req.cookies['token']
+    const token = req.cookies["token"];
 
     console.log(token);
 
