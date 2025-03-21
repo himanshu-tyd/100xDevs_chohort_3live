@@ -1,0 +1,5 @@
+C:\MY-STUF\DEV-LEARNING\COHART-3.O\WEB-3\WEEK-28-RUST-PART-3\target\debug\deps\WEEL_28_RUST_PART_3-57789e42b4f406e4.exe: src\main.rs
+
+C:\MY-STUF\DEV-LEARNING\COHART-3.O\WEB-3\WEEK-28-RUST-PART-3\target\debug\deps\WEEL_28_RUST_PART_3-57789e42b4f406e4.d: src\main.rs
+
+src\main.rs:

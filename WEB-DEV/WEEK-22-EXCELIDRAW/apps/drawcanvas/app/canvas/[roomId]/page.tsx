@@ -8,6 +8,8 @@ interface canvasprops {
 
 const CanvasPage = async ({ params }: canvasprops) => {
 
+  console.log(user)
+
   if (!user) {
     redirect("/sign-in");
   }
