@@ -42,8 +42,5 @@ pub fn counter_contract(
     }
 
 
-
-
-
     Ok(())
 }
